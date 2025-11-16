@@ -1,18 +1,18 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/Header'
-import Tasks from './components/Tasks'
+import { useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import Tasks from "./components/Tasks";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState([]);
 
   return (
     <>
-      <Header/>
-      <Tasks/>
+      <Header setTasks={setTasks}/>
+      <Tasks tasks={tasks}/>
       {/* <BottomPanel/> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
