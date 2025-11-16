@@ -1,6 +1,6 @@
 import {useState} from "react"
 
-function Header({ setTasks }) {
+function Header({ setTasks, handleAddTask }) {
   const [inputValue, setInputValue] = useState("");
 
   return (
@@ -20,7 +20,7 @@ function Header({ setTasks }) {
         <button
           className="add-button text-6xl bg-gray-800 rounded-lg hover:bg-gray-700 w-20 h-20"
           onClick={() => {
-            setTasks(prev => [...prev, {id: Date.now(), text: inputValue, isComplete: false}]);
+            handleAddTask(inputValue);
             setInputValue("")
           }}
         >
