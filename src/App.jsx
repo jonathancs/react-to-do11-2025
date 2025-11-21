@@ -14,10 +14,19 @@ function App() {
     setTasks(prev => prev.filter(task => task.id !== idToBeRemoved))
   }
 
+  function markAsCompleted(idToBeCompleted) {
+    setTasks(prev => prev.map(task => 
+      task.id === idToBeCompleted
+        ? {...task, isComplete: true}
+        : task
+
+    ))
+  }
+
   return (
     <>
       <Header setTasks={setTasks} handleAddTask={handleAddTask}/>
-      <Tasks tasks={tasks} handleRemoveTask={handleRemoveTask}/>
+      <Tasks tasks={tasks} handleRemoveTask={handleRemoveTask} markAsCompleted={markAsCompleted}/>
       {/* <BottomPanel/> */}
     </>
   );
