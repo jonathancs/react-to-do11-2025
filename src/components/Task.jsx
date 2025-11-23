@@ -1,21 +1,38 @@
 import { FaCheck, FaTimes } from "react-icons/fa";
+import { useEffect, useRef } from "react";
 
 function Task({
   task,
   handleRemoveTask,
   markAsCompleted,
   handleUpdateTaskText,
+  handleAddTaskBelow,
+  focusedTaskId,
 }) {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (focusedTaskId === task.id && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [focusedTaskId]);
+
   return (
     <>
       <div className="flex text-gray-400 text-2xl justify-between items-center w-[380px] mx-auto py-2">
         <input
+          ref={inputRef}
           type="text"
           value={task.text}
           onChange={(e) => handleUpdateTaskText(task.id, e.target.value)}
           className={`bg-transparent outline-none flex-1 ${
             task.isComplete ? "line-through text-gray-500" : ""
           }`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAddTaskBelow(task.id);
+            }
+          }}
         />
         <div className="flex gap-3">
           <button
