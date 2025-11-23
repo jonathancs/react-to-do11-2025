@@ -23,10 +23,18 @@ function App() {
     ))
   }
 
+  function handleUpdateTaskText(id, newText) {
+    setTasks(prev => 
+      prev.map(task =>
+        task.id === id ? {...task, text: newText } : task
+      )
+    )
+  }
+
   return (
     <>
       <Header setTasks={setTasks} handleAddTask={handleAddTask}/>
-      <Tasks tasks={tasks} handleRemoveTask={handleRemoveTask} markAsCompleted={markAsCompleted}/>
+      <Tasks handleUpdateTaskText={handleUpdateTaskText} tasks={tasks} handleRemoveTask={handleRemoveTask} markAsCompleted={markAsCompleted}/>
       {/* <BottomPanel/> */}
     </>
   );
