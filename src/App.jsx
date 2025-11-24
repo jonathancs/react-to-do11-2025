@@ -24,9 +24,17 @@ function App() {
     );
   }
 
-  function handleUpdateTaskText(id, newText) {
+  function handleUpdateTaskText(id, newText, newParentId = null) {
     setTasks((prev) =>
-      prev.map((task) => (task.id === id ? { ...task, text: newText } : task))
+      prev.map((task) =>
+        task.id === id
+          ? { 
+            ...task, 
+            text: newText, 
+            parentId: newParentId !== null ? newParentId : task.parentId,
+          }
+          : task
+      )
     );
   }
 
@@ -36,7 +44,7 @@ function App() {
       if (index === -1) return prev;
 
       const newTaskId = Date.now();
-      const newTask = { id: newTaskId, text: "", isComplete: false };
+      const newTask = { id: newTaskId, text: "", isComplete: false, parentId: null };
 
       const newArray = [
         ...prev.slice(0, index + 1),
@@ -50,6 +58,13 @@ function App() {
     });
   }
 
+  function handleAddSubtask(parentId) {
+    setTasks((prev) => [
+      ...prev,
+      { id: Date.now(), text: "", isComplete: false, parentId },
+    ]);
+  }
+
   return (
     <>
       <Header setTasks={setTasks} handleAddTask={handleAddTask} />
@@ -60,6 +75,7 @@ function App() {
         markAsCompleted={markAsCompleted}
         handleAddTaskBelow={handleAddTaskBelow}
         focusedTaskId={focusedTaskId}
+        handleAddSubtask={handleAddSubtask}
       />
       {/* <BottomPanel/> */}
     </>

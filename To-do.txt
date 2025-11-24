@@ -1,0 +1,7 @@
+fix size of big tasks added.
+
+click check again, uncheck task
+
+add subtasks
+
+understand how subtask was added

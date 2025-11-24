@@ -20,7 +20,7 @@ function Header({ setTasks, handleAddTask }) {
         <button
           className="add-button text-6xl bg-gray-800 rounded-lg hover:bg-gray-700 w-20 h-20"
           onClick={() => {
-            handleAddTask(inputValue);
+            handleAddTask(inputValue, null);
             setInputValue("")
           }}
         >
