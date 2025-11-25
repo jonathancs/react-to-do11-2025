@@ -8,9 +8,12 @@ function App() {
   const [focusedTaskId, setFocusedTaskId] = useState(null);
   // sim, se não for esse estado, tu aperta enter, e só cria um novo elemento abaixo, e o cursor não vai pra ele.
 
-  function handleAddTask(text) {
-    setTasks((prev) => [...prev, { id: Date.now(), text, isComplete: false }]);
+  function handleAddTask() {
+    const newId = Date.now()
+    setTasks((prev) => [...prev, { id: newId, text: "", isComplete: false }]);
+    setFocusedTaskId(newId);
   }
+  // nao entendi como funcionou se o useEffect tá em Task
 
   function handleRemoveTask(idToBeRemoved) {
     setTasks((prev) => prev.filter((task) => task.id !== idToBeRemoved));
@@ -69,6 +72,7 @@ function App() {
     <>
       <Header setTasks={setTasks} handleAddTask={handleAddTask} />
       <Tasks
+        handleAddTask={handleAddTask}
         handleUpdateTaskText={handleUpdateTaskText}
         tasks={tasks}
         handleRemoveTask={handleRemoveTask}

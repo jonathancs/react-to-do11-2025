@@ -1,3 +1,5 @@
+import { RxDragHandleDots2 } from "react-icons/rx";
+import { BiCheckbox } from "react-icons/bi";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 
@@ -38,6 +40,8 @@ function Task({
   return (
     <>
       <div className="flex text-gray-400 text-2xl justify-between items-center w-[380px] mx-auto py-2">
+        <BiCheckbox className="text-gray-400 w-9 h-9" />
+        <RxDragHandleDots2 className="text-gray-400 cursor-grab text-3xl" />
         <input
           ref={inputRef}
           type="text"
@@ -50,13 +54,11 @@ function Task({
             if (e.key === "Tab") {
               e.preventDefault();
 
-              // SHIFT + TAB → remove indentação
               if (e.shiftKey) {
                 handleRemoveIndent(task.id, null);
                 return;
               }
 
-              // TAB normal → vira subtask do item acima
               handleIndentTask(task.id);
               return;
             }
