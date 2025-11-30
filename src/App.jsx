@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
@@ -8,8 +8,43 @@ function App() {
   const [focusedTaskId, setFocusedTaskId] = useState(null);
   // sim, se não for esse estado, tu aperta enter, e só cria um novo elemento abaixo, e o cursor não vai pra ele.
 
+  useEffect(() => {
+    async function loadTasks() {
+      try {
+        const res = await fetch("http://localhost:4000/api/tasks");
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setTasks(data);
+        }
+      } catch (err) {
+        console.error("Failed to load tasks", err);
+      }
+    }
+
+    loadTasks();
+  }, []);
+
+  useEffect(() => {
+    async function saveTasks() {
+      try {
+        await fetch("http://localhost:4000/api/tasks", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tasks }),
+        });
+      } catch (err) {
+        console.error("Failed to save tasks", err);
+      }
+    }
+
+    if (tasks) {
+      saveTasks();
+    }
+  }, [tasks]);
+
   function handleAddTask() {
-    const newId = Date.now()
+    const newId = Date.now();
     setTasks((prev) => [...prev, { id: newId, text: "", isComplete: false }]);
     setFocusedTaskId(newId);
   }
@@ -31,11 +66,11 @@ function App() {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id
-          ? { 
-            ...task, 
-            text: newText, 
-            parentId: newParentId !== null ? newParentId : task.parentId,
-          }
+          ? {
+              ...task,
+              text: newText,
+              parentId: newParentId !== null ? newParentId : task.parentId,
+            }
           : task
       )
     );
@@ -47,7 +82,12 @@ function App() {
       if (index === -1) return prev;
 
       const newTaskId = Date.now();
-      const newTask = { id: newTaskId, text: "", isComplete: false, parentId: null };
+      const newTask = {
+        id: newTaskId,
+        text: "",
+        isComplete: false,
+        parentId: null,
+      };
 
       const newArray = [
         ...prev.slice(0, index + 1),
