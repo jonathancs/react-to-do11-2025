@@ -11,7 +11,7 @@ let db;
 async function getDb() {
   if (!db) {
     await client.connect();
-    db = client.db("tasks_app");
+    db = client.db("todo_app");
   }
   return db;
 }

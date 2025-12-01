@@ -13,8 +13,8 @@ app.use(express.json());
 app.get("/api/tasks", async (req, res) => {
   try {
     const db = await getDb();
-    const doc = await db.collection("configs").findOne({ _id: "tasks" });
-    res.json(doc?.tasks || []);
+    const doc = await db.collection("tasks").findOne({ _id: "all" });
+    res.json(doc?.list || []);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to load tasks" });
@@ -29,11 +29,9 @@ app.put("/api/tasks", async (req, res) => {
     }
 
     const db = await getDb();
-    await db.collection("configs").updateOne(
-      { _id: "tasks" },
-      { $set: { tasks } },
-      { upsert: true }
-    );
+    await db
+      .collection("tasks")
+      .updateOne({ _id: "all" }, { $set: { list: tasks } }, { upsert: true });
 
     res.json({ ok: true });
   } catch (err) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
@@ -6,6 +6,7 @@ import Tasks from "./components/Tasks";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [focusedTaskId, setFocusedTaskId] = useState(null);
+  const initialLoadDone = useRef(false);
   // sim, se não for esse estado, tu aperta enter, e só cria um novo elemento abaixo, e o cursor não vai pra ele.
 
   useEffect(() => {
@@ -17,8 +18,10 @@ function App() {
         if (Array.isArray(data)) {
           setTasks(data);
         }
+        initialLoadDone.current = true; // <-- ADD THIS
       } catch (err) {
         console.error("Failed to load tasks", err);
+        initialLoadDone.current = true; // <-- ADD THIS TOO
       }
     }
 
@@ -26,6 +29,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!initialLoadDone.current) return; // <-- BLOCK saving before load
+
     async function saveTasks() {
       try {
         await fetch("http://localhost:4000/api/tasks", {
@@ -38,9 +43,7 @@ function App() {
       }
     }
 
-    if (tasks) {
-      saveTasks();
-    }
+    saveTasks();
   }, [tasks]);
 
   function handleAddTask() {
@@ -110,7 +113,7 @@ function App() {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Tasks
         handleAddTask={handleAddTask}
         handleUpdateTaskText={handleUpdateTaskText}
