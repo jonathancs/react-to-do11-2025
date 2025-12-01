@@ -9,7 +9,6 @@ function Tasks({
   handleUpdateTaskText,
   handleAddTaskBelow,
   focusedTaskId,
-  handleAddSubtask,
   handleAddTask,
 }) {
   const rootTasks = tasks.filter((t) => t.parentId == null); // se nao tem parentId é porque é parent
@@ -25,7 +24,6 @@ function Tasks({
           handleUpdateTaskText={handleUpdateTaskText}
           handleAddTaskBelow={handleAddTaskBelow}
           focusedTaskId={focusedTaskId}
-          handleAddSubtask={handleAddSubtask}
         />
       ))}
       <div className="flex items-center mx-auto w-[380px]">

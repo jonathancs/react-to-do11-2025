@@ -110,7 +110,7 @@ function App() {
 
   return (
     <>
-      <Header setTasks={setTasks} handleAddTask={handleAddTask} />
+      <Header/>
       <Tasks
         handleAddTask={handleAddTask}
         handleUpdateTaskText={handleUpdateTaskText}
