@@ -64,7 +64,7 @@ function Task({
             }
             if (e.key === "Enter") {
               e.preventDefault();
-              handleAddTaskBelow(task.id);
+              handleAddTaskBelow(task.id, task.parentId);
             }
           }}
         />

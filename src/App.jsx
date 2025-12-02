@@ -82,7 +82,7 @@ function App() {
     );
   }
 
-  function handleAddTaskBelow(id) {
+  function handleAddTaskBelow(id, referenceTaskParentId = null) {
     setTasks((prev) => {
       const index = prev.findIndex((task) => task.id === id);
       if (index === -1) return prev;
@@ -92,7 +92,7 @@ function App() {
         id: newTaskId,
         text: "",
         isComplete: false,
-        parentId: null,
+        parentId: referenceTaskParentId // if it's not set, it will default to null, so no need for ternary
       };
 
       const newArray = [
