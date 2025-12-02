@@ -46,7 +46,7 @@ function Task({
           ref={inputRef}
           type="text"
           value={task.text}
-          onChange={(e) => handleUpdateTaskText(task.id, e.target.value)}
+          onChange={(e) => handleUpdateTaskText(task.id, e.target.value, task.parentId)}
           className={`bg-transparent outline-none flex-1 ${
             task.isComplete ? "line-through text-gray-500" : ""
           }`}

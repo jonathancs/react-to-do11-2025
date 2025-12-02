@@ -72,7 +72,10 @@ function App() {
           ? {
               ...task,
               text: newText,
-              parentId: newParentId !== null ? newParentId : task.parentId,
+              parentId: 
+                newParentId === undefined
+                  ? task.parentId
+                  : newParentId
             }
           : task
       )
