@@ -80,6 +80,7 @@ function App() {
           : task
       )
     );
+    setFocusedTaskId(id)
   }
 
   function handleAddTaskBelow(id, referenceTaskParentId = null) {
