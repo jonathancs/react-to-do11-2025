@@ -5,3 +5,8 @@ click check again, uncheck task
 add subtasks
 
 understand how subtask was added
+
+------------
+to do next
+------------
+focus after each indent or undo-indent

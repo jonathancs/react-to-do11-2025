@@ -46,7 +46,9 @@ function Task({
           ref={inputRef}
           type="text"
           value={task.text}
-          onChange={(e) => handleUpdateTaskText(task.id, e.target.value, task.parentId)}
+          onChange={(e) =>
+            handleUpdateTaskText(task.id, e.target.value, task.parentId)
+          }
           className={`bg-transparent outline-none flex-1 ${
             task.isComplete ? "line-through text-gray-500" : ""
           }`}
@@ -55,7 +57,9 @@ function Task({
               e.preventDefault();
 
               if (e.shiftKey) {
-                handleRemoveIndent(task.id, null);
+                const parentTask = tasks.find((t) => t.id === task.parentId);
+                const newParentId = parentTask ? parentTask.parentId : null;
+                handleRemoveIndent(task.id, newParentId);
                 return;
               }
 
