@@ -48,7 +48,7 @@ function App() {
 
   function handleAddTask() {
     const newId = Date.now();
-    setTasks((prev) => [...prev, { id: newId, text: "", isComplete: false }]);
+    setTasks((prev) => [...prev, { id: newId, text: "", isComplete: false, level: 0 }]);
     setFocusedTaskId(newId);
   }
   // nao entendi como funcionou se o useEffect tá em Task
@@ -65,25 +65,24 @@ function App() {
     );
   }
 
-  function handleUpdateTaskText(id, newText, newParentId = null) {
+  function handleUpdateTaskText(id, newText, newParentId = null, newLevel = null) {
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              text: newText,
-              parentId: 
-                newParentId === undefined
-                  ? task.parentId
-                  : newParentId
-            }
-          : task
-      )
-    );
+      prev.map((task) => {
+        if (task.id === id) {
+          const updatedTask = {
+            ...task,
+            text: newText,
+            parentId: newParentId === undefined ? task.parentId : newParentId,
+            level: newLevel ?? task.level
+          }
+          return updatedTask
+        } else {return task}
+      }))
+    
     setFocusedTaskId(id)
   }
 
-  function handleAddTaskBelow(id, referenceTaskParentId = null) {
+  function handleAddTaskBelow(id, parentTaskId = null, parentTaskLevel) {
     setTasks((prev) => {
       const index = prev.findIndex((task) => task.id === id);
       if (index === -1) return prev;
@@ -93,7 +92,8 @@ function App() {
         id: newTaskId,
         text: "",
         isComplete: false,
-        parentId: referenceTaskParentId // if it's not set, it will default to null, so no need for ternary
+        parentId: parentTaskId, // if it's not set, it will default to null, so no need for ternary
+        level: parentTaskLevel
       };
 
       const newArray = [

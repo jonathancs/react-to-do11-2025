@@ -21,20 +21,32 @@ function Task({
 
   const children = tasks.filter((t) => t.parentId === task.id);
 
-  function handleRemoveIndent(id, newParent) {
-    handleUpdateTaskText(id, task.text, newParent);
+  function handleRemoveIndent(id, newParent, currentLevel) {
+    handleUpdateTaskText(id, task.text, newParent, currentLevel-1);
   }
 
   function handleIndentTask(id) {
     const index = tasks.findIndex((t) => t.id === id);
     if (index <= 0) return;
-    const previousId = tasks[index - 1].id;
 
-    handleUpdateTaskParent(id, previousId);
-  }
+    const currentTask = tasks[index]
+    let closestParent = null
+    for (let i = index-1; i >= 0; i--) {
+      if (tasks[i].level == currentTask.level) {
+        closestParent = tasks[i]
+        break
+      }
+    }
 
-  function handleUpdateTaskParent(id, newParentId) {
-    handleUpdateTaskText(id, task.text, newParentId);
+    if (!closestParent) return
+
+    handleUpdateTaskText(
+      id, 
+      currentTask.text, 
+      closestParent.id, 
+      currentTask.level+1
+    )
+  
   }
 
   return (
@@ -59,7 +71,7 @@ function Task({
               if (e.shiftKey) {
                 const parentTask = tasks.find((t) => t.id === task.parentId);
                 const newParentId = parentTask ? parentTask.parentId : null;
-                handleRemoveIndent(task.id, newParentId);
+                handleRemoveIndent(task.id, newParentId, task.level);
                 return;
               }
 
@@ -68,7 +80,7 @@ function Task({
             }
             if (e.key === "Enter") {
               e.preventDefault();
-              handleAddTaskBelow(task.id, task.parentId);
+              handleAddTaskBelow(task.id, task.parentId, task.level);
             }
           }}
         />
